@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.news_fragment.*
 import meng.keddit.R
 import meng.keddit.commons.inflate
+import meng.keddit.features.news.adapter.NewsAdapter
 
 /**
  * Created by meng on 2017/7/31.
@@ -27,5 +28,12 @@ class NewsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         newsList.setHasFixedSize(true)
         newsList.layoutManager = LinearLayoutManager(context)
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        if (newsList.adapter == null) {
+            newsList.adapter = NewsAdapter()
+        }
     }
 }
