@@ -3,7 +3,7 @@ package meng.keddit.commons.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import meng.keddit.R
-import meng.keddit.commons.inflate
+import meng.keddit.commons.extensions.inflate
 
 /**
  * Created by meng on 2017/7/31.

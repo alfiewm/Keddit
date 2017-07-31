@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.news_fragment.*
 import meng.keddit.R
-import meng.keddit.commons.inflate
+import meng.keddit.commons.RedditNewsItem
+import meng.keddit.commons.extensions.inflate
 import meng.keddit.features.news.adapter.NewsAdapter
 
 /**
@@ -29,6 +30,21 @@ class NewsFragment : Fragment() {
         newsList.setHasFixedSize(true)
         newsList.layoutManager = LinearLayoutManager(context)
         initAdapter()
+
+        if (savedInstanceState == null) {
+            val news = mutableListOf<RedditNewsItem>()
+            for (i in 1..10) {
+                news.add(RedditNewsItem(
+                        "author$i",
+                        "Title$i",
+                        i, // number of comments
+                        1457207701L - i * 200, // time
+                        "http://lorempixel.com/200/200/technics/$i", // image url
+                        "url"
+                ))
+            }
+            (newsList.adapter as NewsAdapter).addNews(news)
+        }
     }
 
     private fun initAdapter() {
