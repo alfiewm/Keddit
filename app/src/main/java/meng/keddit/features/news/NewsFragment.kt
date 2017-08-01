@@ -38,7 +38,7 @@ class NewsFragment : Fragment() {
                         "author$i",
                         "Title$i",
                         i, // number of comments
-                        1457207701L - i * 200, // time
+                        1501560798L - i * 200, // time
                         "http://lorempixel.com/200/200/technics/$i", // image url
                         "url"
                 ))

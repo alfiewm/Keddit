@@ -10,7 +10,7 @@ fun Long.getFriendlyTime(): String {
     val dateTime = Date(this * 1000)
     val sb = StringBuffer()
     val current = Calendar.getInstance().time
-    var diffInSeconds = ((current.time - current.time) / 1000).toInt()
+    var diffInSeconds = ((current.time - dateTime.time) / 1000).toInt()
     val sec = if (diffInSeconds >= 60) (diffInSeconds % 60).toInt() else diffInSeconds.toInt()
     diffInSeconds = diffInSeconds / 60
     val min = if (diffInSeconds >= 60) (diffInSeconds % 60).toInt() else diffInSeconds.toInt()
