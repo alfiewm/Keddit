@@ -33,12 +33,12 @@ class NewsFragment : Fragment() {
 
         if (savedInstanceState == null) {
             val news = mutableListOf<RedditNewsItem>()
-            for (i in 1..10) {
+            for (i in 0..10) {
                 news.add(RedditNewsItem(
                         "author$i",
                         "Title$i",
                         i, // number of comments
-                        1501560798L - i * 200, // time
+                        System.currentTimeMillis() / 1000 - i * 2000, // time
                         "http://lorempixel.com/200/200/technics/$i", // image url
                         "url"
                 ))
