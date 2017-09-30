@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.news_fragment.*
 import meng.keddit.R
+import meng.keddit.commons.InfiniteScrollListener
+import meng.keddit.commons.RedditNews
 import meng.keddit.commons.adapter.RxBaseFragment
 import meng.keddit.commons.extensions.inflate
 import meng.keddit.features.news.adapter.NewsAdapter
@@ -23,6 +25,7 @@ class NewsFragment : RxBaseFragment() {
         news_list
     }
 
+    private var redditNews: RedditNews? = null
     private val newsManager by lazy { NewsManager() }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,7 +35,10 @@ class NewsFragment : RxBaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         newsList.setHasFixedSize(true)
-        newsList.layoutManager = LinearLayoutManager(context)
+        val linearLayout = LinearLayoutManager(context)
+        newsList.layoutManager = linearLayout
+        newsList.clearOnScrollListeners()
+        newsList.addOnScrollListener(InfiniteScrollListener({ requestNews() }, linearLayout))
         initAdapter()
 
         if (savedInstanceState == null) {
@@ -41,11 +47,14 @@ class NewsFragment : RxBaseFragment() {
     }
 
     private fun requestNews() {
-        val subscription = newsManager.getNews()
+        val subscription = newsManager.getNews(redditNews?.after ?: "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { retrievedNews -> (newsList.adapter as NewsAdapter).addNews(retrievedNews) },
+                        { retrievedNews ->
+                            redditNews = retrievedNews
+                            (newsList.adapter as NewsAdapter).addNews(retrievedNews.news)
+                        },
                         { e -> Snackbar.make(newsList, e.message ?: "", Snackbar.LENGTH_LONG).show() }
                 )
         subscriptions.add(subscription)
